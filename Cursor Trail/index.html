@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Golden Cursor Shadow - No Scroll</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    
+    body {
+      cursor: default;
+      overflow: hidden; 
+      margin: 0; 
+    }
+
+    
+    .cursor-shadow {
+      position: absolute;
+      pointer-events: none;
+      width: 20px; 
+      height: 20px; 
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 223, 0, 0.8), transparent);
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.5);
+      transform: translate(-50%, -50%);
+    }
+
+    
+    .cursor-shadow::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100%; 
+      height: 100%; 
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.6), transparent);
+      animation: shine 1.5s infinite;
+    }
+
+    
+    @keyframes shine {
+      0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(1.5);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-r from-gray-800 via-gray-900 to-black min-h-screen flex items-center justify-center text-white">
+  <h1 class="text-4xl font-bold">Golden Cursor Shadow - No Scroll</h1>
+
+  <script>
+    
+    const shadow = document.createElement("div");
+    shadow.classList.add("cursor-shadow");
+    document.body.appendChild(shadow);
+
+    
+    let mouseX = 0, mouseY = 0; 
+    let shadowX = 0, shadowY = 0; 
+
+    
+    document.addEventListener("mousemove", (e) => {
+      mouseX = e.pageX;
+      mouseY = e.pageY;
+    });
+
+    function animateShadow() {
+      
+      shadowX += (mouseX - shadowX) * 0.2; 
+      shadowY += (mouseY - shadowY) * 0.2;
+
+     
+      const shadowSize = 10; 
+      shadowX = Math.max(shadowSize, Math.min(window.innerWidth - shadowSize, shadowX));
+      shadowY = Math.max(shadowSize, Math.min(window.innerHeight - shadowSize, shadowY));
+
+      shadow.style.left = `${shadowX}px`;
+      shadow.style.top = `${shadowY}px`;
+
+      requestAnimationFrame(animateShadow); 
+    }
+
+    animateShadow();
+  </script>
+</body>
+</html>
